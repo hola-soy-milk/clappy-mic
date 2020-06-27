@@ -5,11 +5,17 @@ const app = express();
 const server = new Server(app);
 const opn = require('opn');
 const robot = require("robotjs");
+const os = require('os');
 
 app.use(express.static(path.join(__dirname, "app")));
 app.post("/", function (req, res) {
   console.log("👏");
-  robot.typeString("👏");
+  if (os.platform() === 'win32') {
+	  robot.typeString(":clap:");
+  }
+	else {
+	  robot.typeString("👏");
+  }
   robot.keyTap('enter')
   res.send("POST request!!!");
 });
