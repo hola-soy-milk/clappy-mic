@@ -3,7 +3,8 @@ const Server = require("http").Server;
 const express = require("express");
 const app = express();
 const server = new Server(app);
-var robot = require("robotjs");
+const opn = require('opn');
+const robot = require("robotjs");
 
 app.use(express.static(path.join(__dirname, "app")));
 app.post("/", function (req, res) {
@@ -21,6 +22,7 @@ const listen = new Promise(resolve => {
 
 listen.then(() => {
   console.log(`http://localhost:${port}`);
+  opn(`http://localhost:${port}`);
   process.on("SIGINT", () => {
     server.close();
     process.exit();

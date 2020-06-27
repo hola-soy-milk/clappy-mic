@@ -14,8 +14,9 @@ Start it up:
 
     $ yarn run start
 
-Navigate your browser to [localhost:8080](http://localhost:8080), press the
-**Start** button and leave it running in the background. You're good to go!
+Your browser should automatically open to
+[localhost:8080](http://localhost:8080), press the **Start** button and leave
+it running in the background. You're good to go!
 
 ## Compatibility
 
