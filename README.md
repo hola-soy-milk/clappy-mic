@@ -1,6 +1,6 @@
-# Lazy clap
+# Clappy Mic
 
-I got too lazy to look for the clap emoji.
+I struggle when looking for the clap emoji.
 
 This little toy will send a clap 👏 emoji to my keyboard when you clap!
 
