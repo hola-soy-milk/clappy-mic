@@ -7,6 +7,7 @@ var robot = require("robotjs");
 
 app.use(express.static(path.join(__dirname, "app")));
 app.post("/", function (req, res) {
+  console.log("👏");
   robot.typeString("👏");
   robot.keyTap('enter')
   res.send("POST request!!!");
