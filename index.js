@@ -19,7 +19,7 @@ const listen = new Promise(resolve => {
 });
 
 listen.then(() => {
-  console.log(`localhost:${port}`);
+  console.log(`http://localhost:${port}`);
   process.on("SIGINT", () => {
     server.close();
     process.exit();
