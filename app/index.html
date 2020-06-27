@@ -1,4 +1,4 @@
-<div>Teachable Machine Audio Model</div>
+<h1>Press start and then go do your clap away in any app!</h1>
 <button type="button" onclick="init()">Start</button>
 <div id="label-container"></div>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
@@ -41,13 +41,12 @@
         // 2. A configuration object with adjustable fields
         recognizer.listen(result => {
             const scores = result.scores; // probability of prediction for each class
-            // render the probability scores per class
-                const classPrediction = classLabels[0] + ": " + result.scores[0].toFixed(2);
-                labelContainer.childNodes[0].innerHTML = classPrediction;
             if(result.scores[0].toFixed(2) > 0.90) {
+              labelContainer.childNodes[0].innerHTML = "OOH Sending a clap 👏";
               axios.post('/')
+            } else {
+              labelContainer.childNodes[0].innerHTML = "Listening for a clap...";
             }
-
         }, {
             includeSpectrogram: true, // in case listen should return result.spectrogram
             probabilityThreshold: 0.75,
