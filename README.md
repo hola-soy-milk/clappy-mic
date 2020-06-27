@@ -2,7 +2,7 @@
 
 I struggle when looking for the clap emoji.
 
-This little toy will send a clap 👏 emoji to my keyboard when you clap!
+This little toy will send a clap 👏 for you when you clap!
 
 ## Setup
 
