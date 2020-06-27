@@ -3,10 +3,12 @@ const Server = require("http").Server;
 const express = require("express");
 const app = express();
 const server = new Server(app);
+var robot = require("robotjs");
 
 app.use(express.static(path.join(__dirname, "app")));
 app.post("/", function (req, res) {
-  console.log("CLAP");// req data
+  robot.typeString("👏");
+  robot.keyTap('enter')
   res.send("POST request!!!");
 });
 
