@@ -5,12 +5,21 @@
   "repository": "git@github.com:ramonh/clappy-mic.git",
   "author": "Ramón Huidobro <hola@ramonh.dev>",
   "license": "MIT",
+  "build": {
+    "appId": "com.clappy-mic"
+  },
   "scripts": {
-    "start": "node index.js"
+    "build": "npx electron-rebuild -f -m node_modules/robotjs",
+    "start": "yarn run build && ./node_modules/.bin/electron .",
+    "export": "yarn run build && ./node_modules/.bin/electron-builder ."
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "opn": "^6.0.0",
+    "node-gyp": "^7.0.0",
     "robotjs": "^0.6.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^22.7.0",
+    "electron-rebuild": "^1.11.0",
+    "electron": "^9.0.5"
   }
 }
