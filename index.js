@@ -1,61 +1,66 @@
-const url = require('url')
-const path = require('path')
-const robot = require("robotjs");
-const { app, BrowserWindow, ipcMain, systemPreferences } = require('electron')
+const url = require('url');
+
+const path = require('path');
+const robot = require('robotjs');
+const {app, BrowserWindow, ipcMain, systemPreferences} = require('electron');
 const os = require('os');
 
-async function createWindow () {
+async function createWindow() {
   // Create the browser window.
-  let win = new BrowserWindow({
+  const win = new BrowserWindow({
     width: 400,
-    height:160,
+    height: 160,
     transparent: true,
     hasShadow: false,
     webPreferences: {
-      nodeIntegration: true
-    }
-  })
+      nodeIntegration: true,
+    },
+  });
 
-  var micAccess = false
+  let micAccess = false;
   try {
-    if (os.platform() !== "darwin") {
+    if (os.platform() !== 'darwin') {
       micAccess = true;
     }
 
-    const status = await systemPreferences.getMediaAccessStatus("microphone");
-    console.log("Current microphone access status:", status);
+    const status = await systemPreferences.getMediaAccessStatus('microphone');
+    console.log('Current microphone access status:', status);
 
-    if (status === "not-determined") {
-      const success = await systemPreferences.askForMediaAccess("microphone");
-      log.info("Result of microphone access:", success.valueOf() ? "granted" : "denied");
+    if (status === 'not-determined') {
+      const success = await systemPreferences.askForMediaAccess('microphone');
+      console.log(
+        'Result of microphone access:',
+        success.valueOf() ? 'granted' : 'denied',
+      );
       micAccess = success.valueOf();
     }
 
-    micAccess = status === "granted";
+    micAccess = status === 'granted';
   } catch (error) {
-    console.log("Could not get microphone permission:", error.message);
+    console.log('Could not get microphone permission:', error.message);
   }
   if (micAccess) {
     // and load the index.html of the app.
     win.setAutoHideMenuBar(true);
     win.setAlwaysOnTop(true, 'floating');
-    win.loadURL(url.format ({
-      pathname: path.join(__dirname, 'app/index.html'),
-      protocol: 'file:',
-      slashes: true
-    }))
+    win.loadURL(
+      url.format({
+        pathname: path.join(__dirname, 'app/index.html'),
+        protocol: 'file:',
+        slashes: true,
+      }),
+    );
   }
 }
 
-ipcMain.on('clap', (event, arg) => {
-  console.log("👏");
+ipcMain.on('clap', () => {
+  console.log('👏');
   if (os.platform() === 'win32') {
-    robot.typeString(":clap:");
+    robot.typeString(':clap:');
+  } else {
+    robot.typeString('👏');
   }
-  else {
-    robot.typeString("👏");
-  }
-  robot.keyTap('enter')
+  robot.keyTap('enter');
 });
 
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
