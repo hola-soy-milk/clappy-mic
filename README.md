@@ -2,7 +2,11 @@
 
 I struggle when looking for the clap emoji.
 
-This little toy will send a clap 👏 for you when you clap!
+This little toy will send a clap 👏 for you when you clap into the mic!
+
+Uses [Teachable Machine](https://teachablemachine.withgoogle.com/).
+
+Big thank you to [Charlie Gerard](https://twitter.com/devdevcharlie) for inspiring me and for giving me tips.
 
 ## Setup
 
