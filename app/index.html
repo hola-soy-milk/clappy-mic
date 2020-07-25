@@ -7,65 +7,54 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/speech-commands@0.4.0/dist/speech-commands.min.js"></script>
 
 <script type="text/javascript">
-    // more documentation available at
-    // https://github.com/tensorflow/tfjs-models/tree/master/speech-commands
+  // more documentation available at
+  // https://github.com/tensorflow/tfjs-models/tree/master/speech-commands
 
-    // the link to your model provided by Teachable Machine export panel
-    const URL = "https://teachablemachine.withgoogle.com/models/CW7ZZU1uE/";
-    const { ipcRenderer } = require('electron')
+  // the link to your model provided by Teachable Machine export panel
+  const URL = "https://teachablemachine.withgoogle.com/models/CW7ZZU1uE/";
+  const { ipcRenderer } = require('electron');
+  const tolerance = 0.90;
 
-    async function createModel() {
-        const checkpointURL = URL + "model.json"; // model topology
-        const metadataURL = URL + "metadata.json"; // model metadata
+  async function createModel() {
+    const checkpointURL = URL + "model.json"; // model topology
+    const metadataURL = URL + "metadata.json"; // model metadata
 
-        const recognizer = speechCommands.create(
-            "BROWSER_FFT", // fourier transform type, not useful to change
-            undefined, // speech commands vocabulary feature, not useful for your models
-            checkpointURL,
-            metadataURL);
+    const recognizer = speechCommands.create(
+      "BROWSER_FFT", // fourier transform type, not useful to change
+      undefined, // speech commands vocabulary feature, not useful for your models
+      checkpointURL,
+      metadataURL);
 
-        // check that model and metadata are loaded via HTTPS requests.
-        await recognizer.ensureModelLoaded();
+    // check that model and metadata are loaded via HTTPS requests.
+    await recognizer.ensureModelLoaded();
 
-        return recognizer;
-    }
+    return recognizer;
+  }
 
-    async function init() {
-      let button = document.getElementById("btn");
-      let recognizer = await createModel();
-      let classLabels = recognizer.wordLabels(); // get class labels
-      let labelContainer = document.getElementById("label-container");
-      for (let i = 0; i < classLabels.length; i++) {
-        labelContainer.appendChild(document.createElement("div"));
+  async function init() {
+    let button = document.getElementById("btn");
+    let recognizer = await createModel();
+    let classLabels = recognizer.wordLabels(); // get class labels
+
+    // listen() takes two arguments:
+    // 1. A callback function that is invoked anytime a word is recognized.
+    // 2. A configuration object with adjustable fields
+    recognizer.listen(result => {
+      let scores = result.scores; // probability of prediction for each class
+      if(result.scores[0].toFixed(2) > tolerance) {
+        ipcRenderer.send('clap', 'clap')
       }
-
-      // listen() takes two arguments:
-      // 1. A callback function that is invoked anytime a word is recognized.
-      // 2. A configuration object with adjustable fields
-      recognizer.listen(result => {
-        let scores = result.scores; // probability of prediction for each class
-        if(result.scores[0].toFixed(2) > 0.90) {
-          labelContainer.childNodes[0].innerHTML = "OOH Sending a clap 👏";
-          ipcRenderer.send('clap', 'clap')
-        } else {
-          labelContainer.childNodes[0].innerHTML = "Listening for a clap...";
-        }
-      }, {
-        includeSpectrogram: true, // in case listen should return result.spectrogram
-        probabilityThreshold: 0.75,
-        invokeCallbackOnNoiseAndUnknown: true,
-        overlapFactor: 0.50 // probably want between 0.5 and 0.75. More info in README
-      });
-        button.innerHTML = "Stop"
-      button.onclick = function() {
-          labelContainer.childNodes[0].innerHTML = "";
-        recognizer.stopListening()
-        button.onclick = init;
-      button.innerHTML = "I'm ready to start clapping!"
-      }
-
-
-      // Stop the recognition in 5 seconds.
-      // setTimeout(() => , 5000);
+    }, {
+      includeSpectrogram: true, // in case listen should return result.spectrogram
+      probabilityThreshold: 0.75,
+      invokeCallbackOnNoiseAndUnknown: true,
+      overlapFactor: 0.50 // probably want between 0.5 and 0.75. More info in README
+    });
+    button.innerHTML = "Stop ❌"
+    button.onclick = function() {
+      recognizer.stopListening()
+      button.onclick = init;
+      button.innerHTML = "Start 👏"
     }
+  }
 </script>
