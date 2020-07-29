@@ -8,8 +8,8 @@ const os = require('os');
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
-    width: 400,
-    height: 160,
+    width: 360,
+    height: 200,
     transparent: true,
     hasShadow: false,
     webPreferences: {
@@ -24,20 +24,14 @@ async function createWindow() {
     }
 
     const status = await systemPreferences.getMediaAccessStatus('microphone');
-    console.log('Current microphone access status:', status);
-
     if (status === 'not-determined') {
       const success = await systemPreferences.askForMediaAccess('microphone');
-      console.log(
-        'Result of microphone access:',
-        success.valueOf() ? 'granted' : 'denied',
-      );
       micAccess = success.valueOf();
     }
 
     micAccess = status === 'granted';
   } catch (error) {
-    console.log('Could not get microphone permission:', error.message);
+    console.error('Could not get microphone permission:', error.message);
   }
   if (micAccess) {
     // and load the index.html of the app.
