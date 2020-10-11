@@ -1,6 +1,6 @@
 {
   "name": "clappy-mic",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "repository": "git@github.com:ramonh/clappy-mic.git",
   "author": "Ramón Huidobro <hola@ramonh.dev>",
