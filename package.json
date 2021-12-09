@@ -11,7 +11,7 @@
   "scripts": {
     "build": "npx electron-rebuild -f -m node_modules/robotjs",
     "start": "yarn run build && ./node_modules/.bin/electron .",
-    "export": "yarn run build && ./node_modules/.bin/electron-builder ."
+    "export": "yarn run build && CSC_IDENTITY_AUTO_DISCOVERY=false ./node_modules/.bin/electron-builder ."
   },
   "husky": {
     "hooks": {
