@@ -1,16 +1,22 @@
-on: [push]
-name: CodeSee Map
+# This workflow was added by CodeSee. Learn more at https://codesee.io/
+# This is v2.0 of this workflow file
+on:
+  push:
+    branches:
+      - main
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+name: CodeSee
+
+permissions: read-all
 
 jobs:
-  test_map_action:
+  codesee:
     runs-on: ubuntu-latest
-    name: Run map action on action code
+    continue-on-error: true
+    name: Analyze the repo with CodeSee
     steps:
-      - name: checkout
-        id: checkout
-        uses: actions/checkout@v2
-      - name: run
-        id: run
-        uses: Codesee-io/codesee-map-action@latest
+      - uses: Codesee-io/codesee-action@v2
         with:
-          api_token: ${{ secrets.CODESEE_ARCH_DIAG_API_TOKEN }}
+          codesee-token: ${{ secrets.CODESEE_ARCH_DIAG_API_TOKEN }}
